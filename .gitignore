@@ -1,0 +1,30 @@
+# Python cache / tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
+
+# Virtual environments
+venv/
+.venv/
+
+# Secrets / environment files
+.env
+.env.*
+
+# Editor / local agent state
+.vscode/
+.claude/
+
+# Bookmark exports (personal browsing data) + generated outputs
+Bookmarks
+bookmarks_*.html
+Bookmarks_organized_*
+Bookmarks_organized_*/
+bookmarks_organized_*.html
+
+# Web enrichment persistent cache (may include sensitive scraped content / token params)
+_enriched_cache.json
+
