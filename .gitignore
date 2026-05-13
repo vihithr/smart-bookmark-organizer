@@ -5,7 +5,6 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 *.log
-
 # Virtual environments
 venv/
 .venv/
@@ -13,6 +12,7 @@ venv/
 # Secrets / environment files
 .env
 .env.*
+config.json
 
 # Editor / local agent state
 .vscode/

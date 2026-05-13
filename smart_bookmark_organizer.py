@@ -23,18 +23,44 @@ import time
 from bookmark_utils import BookmarkHTMLParser, ChromeBookmarkParser, BookmarkGenerator
 from web_enricher import WebEnricher
 
+# ==================== 配置文件读取 ====================
+def _load_json_config_file() -> Dict:
+    """
+    从同目录读取 config.json（可选）。
+    说明：真实密钥不要提交到 GitHub，config.json 会被 .gitignore 忽略。
+    """
+    try:
+        cfg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
+        with open(cfg_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return {}
+
+
 # ==================== 配置部分 ====================
 class Config:
     """配置类"""
+    FILE_CONFIG = _load_json_config_file()
+
     # OpenAI API配置
     # 通过环境变量注入密钥，避免把真实密钥提交到 GitHub
     API_KEY = (
         os.environ.get("DEEPSEEK_API_KEY")
         or os.environ.get("OPENAI_API_KEY")
         or os.environ.get("API_KEY")
+        or (FILE_CONFIG.get("api_key") if isinstance(FILE_CONFIG, dict) else None)
     )
-    API_BASE = "https://api.deepseek.com/v1"
-    MODEL = "deepseek-v4-flash"
+    API_BASE = (
+        os.environ.get("API_BASE")
+        or (FILE_CONFIG.get("api_base") if isinstance(FILE_CONFIG, dict) else None)
+        or "https://api.deepseek.com/v1"
+    )
+    MODEL = (
+        os.environ.get("MODEL")
+        or (FILE_CONFIG.get("model") if isinstance(FILE_CONFIG, dict) else None)
+        or "deepseek-v4-flash"
+    )
     
     # 请求配置
     REQUEST_TIMEOUT = 10

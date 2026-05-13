@@ -31,16 +31,20 @@ pip install -r requirements.txt
 ```
 
 ## ⚙️ 配置
-通过环境变量配置 API 密钥（不要把真实密钥写进代码或提交到 GitHub）。
+支持两种方式配置 `API Key` 和 `API Base`（**环境变量优先**，其次读取同目录 `config.json`）。
+
+- 环境变量：适合本机/CI
+- `config.json`：适合本地开发（注意别提交到 GitHub，已默认忽略）
 
 ```python
 class Config:
     # API配置
-    # 密钥会从环境变量读取（DEEPSEEK_API_KEY / OPENAI_API_KEY / API_KEY 任选其一）
-    # 你无需手动在代码里填真实密钥
-    API_KEY = "（由环境变量注入）"
-    API_BASE = "https://api.openai.com/v1"  # 可选
-    MODEL = "gpt-3.5-turbo"  # 可选
+    # 优先级：
+    # 1) 环境变量：DEEPSEEK_API_KEY / OPENAI_API_KEY / API_KEY
+    # 2) 同目录 config.json: { "api_key": "...", "api_base": "...", "model": "..." }
+    API_KEY = "（由环境变量或 config.json 注入）"
+    API_BASE = "（由环境变量或 config.json 注入，默认 https://api.deepseek.com/v1）"
+    MODEL = "（由环境变量或 config.json 注入，默认 deepseek-v4-flash）"
     
     # 性能配置
     BATCH_SIZE = 10  # 每批处理的书签数量
@@ -236,9 +240,11 @@ def get_function_definitions(self):
 ```
 ❌ 错误: 未检测到 API 密钥
 ```
-**解决**：设置环境变量，例如：
+**解决**（任选一种）：
+- 方式 A：设置环境变量，例如：
 - PowerShell：`$env:DEEPSEEK_API_KEY="你的key"`
 - cmd：`set DEEPSEEK_API_KEY=你的key`
+- 方式 B：创建 `config.json`（可以从 `config.example.json` 复制）
 
 ### 分类失败
 ```
