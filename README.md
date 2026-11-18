@@ -304,7 +304,7 @@ bookmarks/
 
 ## 📜 许可证
 
-MIT License
+MIT License — see [LICENSE](LICENSE).
 
 ## 🤝 贡献
 
